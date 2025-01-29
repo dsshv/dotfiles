@@ -6,3 +6,4 @@ cursor-color = #a7c080
 cursor-style = block
 cursor-style-blink = true
 shell-integration-features = false
+window-decoration = false
