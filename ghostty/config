@@ -1,0 +1,8 @@
+theme = "Everforest Dark - Hard"
+font-family = JetBrainsMono Nerd Font
+font-size = 16
+keybind = cmd+shift+space=toggle_quick_terminal
+cursor-color = #a7c080
+cursor-style = block
+cursor-style-blink = true
+shell-integration-features = false
