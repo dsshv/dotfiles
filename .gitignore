@@ -1,4 +1,6 @@
 btop/btop.log
+nvim/lazy-lock.json
+nvim.bak
 thefuck/__pycache__
 tmux/plugins
 zed

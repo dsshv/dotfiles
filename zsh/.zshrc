@@ -98,19 +98,21 @@ source ~/.config/fzf-git.sh/fzf-git.sh
 show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
 export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
-_fzf_comprun() {
-local command=$1
-shift
 
-case "$command" in
-  cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
-  export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
-  ssh)          fzf --preview 'dig {}'                   "$@" ;;
-  *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
-esac
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+  esac
 }
 
-export BAT_THEME=Wall-Dcol
+export BAT_CONFIG_PATH="$HOME/.config/bat/bat.conf"
+export BAT_THEME="everforest-dark"
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -140,21 +142,50 @@ source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Aliases
 if [ -x "$(command -v eza)" ]; then
   alias ez='eza --icons --git'
   alias ls='eza --long --all --group --icons --git'
 fi
-alias cat='bat'
-alias df='duf'
-alias find='fd'
-alias man='tldr'
-alias top='btop'
-alias htop='btop'
-alias du='ncdu'
-alias ping='gping'
-alias vim='nvim'
-alias vi='nvim'
-alias cd='z'
+if [ -x "$(command -v bat)" ]; then
+  alias cat='bat'
+fi
+if [ -x "$(command -v duf)" ]; then
+  alias df='duf'
+fi
+if [ -x "$(command -v fd)" ]; then
+  alias find='fd'
+fi
+if [ -x "$(command -v tldr)" ]; then
+  alias man='tldr'
+fi
+if [ -x "$(command -v btop)" ]; then
+  alias top='btop'
+fi
+if [ -x "$(command -v ncdu)" ]; then
+  alias du='ncdu'
+fi
+if [ -x "$(command -v gping)" ]; then
+  alias ping='gping'
+fi
+if [ -x "$(command -v nvim)" ]; then
+  alias vim='nvim'
+fi
+if [ -x "$(command -v nvim)" ]; then
+  alias vi='nvim'
+fi
+if [ -x "$(command -v z)" ]; then
+  alias cd='z'
+fi
+if [ -x "$(command -v lazygit)" ]; then
+  alias lg='lazygit'
+fi
+alias scripts='bun run "$(fd . ~/.config/bun_scripts/scripts | fzf)"'
+
+# Custom commands
+mcd() {
+  mkdir -p "$1" && z "$1"
+}
 
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -163,4 +194,12 @@ eval "$(zoxide init zsh)"
 eval "$(fzf --zsh)"
 eval "$(thefuck --alias)" 
 
-eval $(thefuck --alias)
+# bun completions
+[ -s "/Users/ilmk/.bun/_bun" ] && source "/Users/ilmk/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export GPG_TTY=$(tty)
+export PINENTRY_USER_DATA=USE_CURSES
+export GPG_TTY=$(tty)

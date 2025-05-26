@@ -2,7 +2,10 @@ return {
   "williamboman/mason.nvim",
   opts = {
     ensure_installed = {
+      -- lua
+      "lua-language-server",
       "stylua",
+      -- shell
       "shellcheck",
       "shfmt",
       -- html & css
